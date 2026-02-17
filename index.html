@@ -3,13 +3,2432 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cold Lava</title>
+  <title>Cold Lava — Built for Your Business</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="cold-lava-logo-gold.png" id="favicon">
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const favicon = document.getElementById('favicon');
+      document.addEventListener('visibilitychange', function() {
+        favicon.href = document.hidden ? 'cold-lava-logo-blue.png' : 'cold-lava-logo-gold.png';
+      });
+    });
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
-    body { background: #000; color: #fff; font-family: monospace; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-    p { color: rgba(255,255,255,0.3); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    /* ===== PHASE 1: FOUNDATION - GLOBAL STYLES ===== */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --color-bg: #030305;
+      --color-text-primary: #FFFFFF;
+      --color-text-secondary: #E5E7EB;
+      --color-text-muted: rgba(255, 255, 255, 0.5);
+      --color-accent: #00d4ff;
+      --color-gold: #D4AF37;
+      --color-border: rgba(6, 182, 212, 0.2);
+      --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --container-max: 1280px;
+      --section-padding: 8rem;
+      --section-padding-mobile: 4rem;
+      --container-padding: 2rem;
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      font-family: var(--font-primary);
+      background: var(--color-bg);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      font-size: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+    }
+
+    h3 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .lead {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-muted);
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding-left: var(--container-padding);
+      padding-right: var(--container-padding);
+    }
+
+    .section {
+      position: relative;
+      padding: var(--section-padding) 0;
+    }
+
+    /* ===== BACKGROUND EFFECTS ===== */
+
+    @keyframes streamFlow {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.5; transform: translateY(-10vh); }
+    }
+
+    .light-stream {
+      position: absolute;
+      width: 1px;
+      height: 40vh;
+      background: linear-gradient(to bottom, transparent 0%, rgba(6, 182, 212, 0.3) 50%, transparent 100%);
+      animation: streamFlow var(--stream-dur, 7s) ease-in-out infinite;
+      animation-delay: var(--stream-delay, 0s);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .section-atmosphere {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(6, 182, 212, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.5) 1px, transparent 1px);
+      background-size: 12px 12px;
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    /* ===== CARD COMPONENTS ===== */
+
+    .card {
+      position: relative;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--color-border);
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .card.with-corners::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 12px; height: 12px;
+      border-left: 1px solid var(--color-border);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .card.with-corners::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 12px; height: 12px;
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .card.with-grid .grid-pattern {
+      z-index: 0;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== LOADING SCREEN ===== */
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.08); }
+    }
+
+    #loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.6s var(--ease-smooth);
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #loading-screen img {
+      width: 120px;
+      height: auto;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    /* ===== FADE-IN ANIMATIONS ===== */
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== SCROLL PROGRESS BAR ===== */
+
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(6, 182, 212, 0.3), var(--color-accent));
+      z-index: 9998;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ===== WORKFLOW BOXES (Process section) ===== */
+
+    .workflow-box {
+      position: relative;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      width: 180px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .workflow-box::before,
+    .workflow-box::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: rgba(6, 182, 212, 0.6);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .workflow-box::before {
+      top: 0; left: 0;
+      border-left: 1px solid;
+      border-top: 1px solid;
+    }
+
+    .workflow-box::after {
+      bottom: 0; right: 0;
+      border-right: 1px solid;
+      border-bottom: 1px solid;
+      opacity: 0.5;
+    }
+
+    .workflow-box-subtitle {
+      font-size: 0.7rem;
+      line-height: 1.3;
+      color: rgba(255, 255, 255, 0.35);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ===== RESPONSIVE ===== */
+
+    @media (max-width: 768px) {
+      :root {
+        --section-padding: 4rem;
+        --container-padding: 1.5rem;
+      }
+      .lead { font-size: 1.1rem; }
+      .card { padding: 1.5rem; }
+      #company > .container > div:last-child {
+        grid-template-columns: 1fr !important;
+        gap: 3rem !important;
+      }
+      #company .card { transform: none !important; }
+      #company > .container > div:last-child > div:last-child {
+        position: static !important;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .workflow-container { display: block !important; }
+    }
+
+    /* ===== TICKER ===== */
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== PROBLEM SECTION ===== */
+
+    @keyframes fadeInSlow {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== PRODUCTS ACCORDION ===== */
+
+    .products-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tier-item {
+      border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+    }
+
+    .tier-item:first-child {
+      border-top: 1px solid rgba(6, 182, 212, 0.1);
+    }
+
+    .tier-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.75rem 0;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-smooth);
+      position: relative;
+      user-select: none;
+    }
+
+    .tier-header:hover { padding-left: 0.5rem; }
+    .tier-header:hover .tier-name { color: var(--color-accent); }
+    .tier-header:hover .tier-line { background: var(--color-accent); width: 3rem; }
+
+    .tier-number {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.25);
+      min-width: 2rem;
+      transition: color 0.3s var(--ease-smooth);
+    }
+
+    .tier-item.active .tier-number { color: var(--color-accent); }
+
+    .tier-line {
+      width: 2rem;
+      height: 1px;
+      background: rgba(6, 182, 212, 0.2);
+      transition: all 0.4s var(--ease-smooth);
+      flex-shrink: 0;
+    }
+
+    .tier-item.active .tier-line { width: 4rem; background: var(--color-accent); }
+
+    .tier-name {
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      transition: color 0.3s var(--ease-smooth);
+      flex: 1;
+    }
+
+    .tier-item.active .tier-name { color: var(--color-accent); }
+
+    .tier-badge {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--color-gold);
+      background: rgba(212, 175, 55, 0.05);
+      white-space: nowrap;
+    }
+
+    .tier-chevron {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.4s var(--ease-smooth);
+      color: rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+
+    .tier-item.active .tier-chevron {
+      transform: rotate(180deg);
+      color: var(--color-accent);
+    }
+
+    .tier-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s var(--ease-smooth), opacity 0.4s var(--ease-smooth);
+      opacity: 0;
+    }
+
+    .tier-item.active .tier-body { opacity: 1; }
+
+    .tier-content {
+      padding: 0 0 3rem 3.5rem;
+    }
+
+    .tier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tier-info-block h4 {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tier-info-block h4::before {
+      content: '';
+      width: 8px;
+      height: 1px;
+      background: var(--color-accent);
+    }
+
+    .tier-info-block p,
+    .tier-info-block li {
+      color: var(--color-text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .tier-info-block ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tier-info-block ul li {
+      padding-left: 1.25rem;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-info-block ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.65rem;
+      width: 4px;
+      height: 4px;
+      background: rgba(6, 182, 212, 0.4);
+      border-radius: 50%;
+    }
+
+    .tier-description {
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    /* Demo areas */
+    .demo-area {
+      position: relative;
+      margin-top: 2rem;
+    }
+
+    .demo-area .demo-label {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(6, 182, 212, 0.5);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .demo-area .demo-label::before { content: ''; width: 1.5rem; height: 1px; background: rgba(6, 182, 212, 0.15); }
+    .demo-area .demo-label::after { content: ''; flex: 1; height: 1px; background: rgba(6, 182, 212, 0.15); }
+
+    .demo-frame-wrapper {
+      position: relative;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(6, 182, 212, 0.15);
+      overflow: hidden;
+    }
+
+    .demo-frame-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 12px; height: 12px;
+      border-left: 1px solid rgba(6, 182, 212, 0.3);
+      border-top: 1px solid rgba(6, 182, 212, 0.3);
+      z-index: 2;
+    }
+
+    .demo-frame-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 12px; height: 12px;
+      border-right: 1px solid rgba(6, 182, 212, 0.3);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+      z-index: 2;
+    }
+
+    .demo-frame-wrapper iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      background: #0a0a0f;
+    }
+
+    /* Device mockups */
+    .device-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .device-mockup .device-label {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .laptop-frame {
+      position: relative;
+      background: #111;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px 8px 0 0;
+      padding: 6px;
+      overflow: hidden;
+      height: 240px;
+    }
+
+    .laptop-frame iframe {
+      width: 1440px;
+      height: 900px;
+      transform: scale(0.24);
+      transform-origin: top left;
+      border: none;
+      border-radius: 4px 4px 0 0;
+      background: #0a0a0f;
+      pointer-events: none;
+    }
+
+    .laptop-base {
+      height: 12px;
+      background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+      border-radius: 0 0 4px 4px;
+      margin: 0 -5%;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: none;
+    }
+
+    .phone-frame {
+      position: relative;
+      background: #111;
+      border: 3px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 32px 8px 24px;
+      max-width: 180px;
+      margin: 0 auto;
+      aspect-ratio: 9/19;
+      overflow: hidden;
+    }
+
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      z-index: 5;
+    }
+
+    .phone-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+      background: #0a0a0f;
+    }
+
+    /* BOS tabs */
+    .bos-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+    }
+
+    .bos-tab {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.75rem 1.25rem;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-bottom: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.3s var(--ease-smooth);
+      position: relative;
+    }
+
+    .bos-tab:hover {
+      color: var(--color-text-secondary);
+      background: rgba(6, 182, 212, 0.05);
+    }
+
+    .bos-tab.active {
+      color: var(--color-accent);
+      background: rgba(0, 0, 0, 0.6);
+      border-color: rgba(6, 182, 212, 0.2);
+    }
+
+    .bos-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 1px;
+      background: var(--color-bg);
+    }
+
+    .bos-panel { display: none; }
+    .bos-panel.active { display: block; }
+
+    /* Flagship glow */
+    .flagship-glow {
+      position: relative;
+    }
+
+    .flagship-glow::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(6, 182, 212, 0.1), rgba(212, 175, 55, 0.15));
+      z-index: -1;
+      animation: flagshipPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes flagshipPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Workflow nodes */
+    .workflow-demo {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding: 1.5rem 0;
+    }
+
+    .workflow-node {
+      position: relative;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      padding: 1rem 1.25rem;
+      min-width: 140px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .workflow-node::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 8px; height: 8px;
+      border-left: 1px solid rgba(6, 182, 212, 0.3);
+      border-top: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .workflow-node::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 8px; height: 8px;
+      border-right: 1px solid rgba(6, 182, 212, 0.3);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .workflow-node .node-icon { font-size: 1.25rem; margin-bottom: 0.5rem; }
+
+    .workflow-node .node-title {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-primary);
+    }
+
+    .workflow-node .node-sub {
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .workflow-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .workflow-arrow svg {
+      width: 24px;
+      height: 24px;
+      color: rgba(6, 182, 212, 0.3);
+    }
+
+    /* Social proof card */
+    .social-proof {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(6, 182, 212, 0.03);
+      border-left: 2px solid rgba(6, 182, 212, 0.2);
+    }
+
+    .social-proof blockquote {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 0.75rem;
+    }
+
+    .social-proof cite {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(6, 182, 212, 0.5);
+      font-style: normal;
+    }
+
+    /* Psychology blocks */
+    .psych-block {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .psych-block:last-child { border-bottom: none; }
+
+    .psych-label {
+      font-family: var(--font-mono);
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(6, 182, 212, 0.3);
+      margin-bottom: 0.75rem;
+    }
+
+    /* WhatsApp mockup */
+    .whatsapp-mockup {
+      background: #0d1117;
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 400px;
+    }
+
+    .wa-header {
+      background: rgba(37, 211, 102, 0.08);
+      border-bottom: 1px solid rgba(37, 211, 102, 0.15);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .wa-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(37, 211, 102, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .wa-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--color-text-primary);
+    }
+
+    .wa-status {
+      font-size: 0.7rem;
+      color: rgba(37, 211, 102, 0.7);
+    }
+
+    .wa-messages {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .wa-msg {
+      max-width: 80%;
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .wa-msg.sent {
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      align-self: flex-end;
+      color: var(--color-text-primary);
+    }
+
+    .wa-msg.received {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      align-self: flex-start;
+      color: var(--color-text-secondary);
+    }
+
+    .wa-msg.voice {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .wa-msg .wa-time {
+      display: block;
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.3);
+      text-align: right;
+      margin-top: 0.25rem;
+    }
+
+    /* Products responsive */
+    @media (max-width: 768px) {
+      .tier-content { padding-left: 0; }
+      .tier-grid { grid-template-columns: 1fr; }
+      .tier-header { gap: 1rem; }
+      .tier-line { display: none; }
+      .tier-badge { display: none; }
+      .device-showcase { grid-template-columns: 1fr; }
+    }
+
+    /* ===== REP SIDEBAR ===== */
+
+    #rep-sidebar {
+      position: fixed;
+      right: -320px;
+      top: 0;
+      height: 100vh;
+      width: 300px;
+      background: rgba(3, 3, 5, 0.97);
+      border-left: 1px solid rgba(6, 182, 212, 0.2);
+      backdrop-filter: blur(20px);
+      z-index: 9999;
+      transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    #rep-sidebar.open { right: 0; }
+
+    #sidebar-toggle {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-right: none;
+      color: rgba(6, 182, 212, 0.5);
+      cursor: pointer;
+      padding: 1rem 0.5rem;
+      z-index: 10000;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      writing-mode: vertical-rl;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      transition: all 0.3s;
+    }
+
+    #sidebar-toggle:hover {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--color-accent);
+    }
+
+    .sidebar-section {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1.5rem;
+    }
+
+    .sidebar-label {
+      font-family: var(--font-mono);
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(6, 182, 212, 0.4);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--color-text-primary);
+      padding: 0.5rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      outline: none;
+    }
+
+    .sidebar-input:focus { border-color: rgba(6, 182, 212, 0.3); }
+
+    .tier-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      cursor: pointer;
+    }
+
+    .tier-toggle input[type="checkbox"] {
+      accent-color: var(--color-accent);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .tier-toggle label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .tier-toggle:has(input:checked) label { color: var(--color-accent); }
+
+    .mode-btn {
+      padding: 0.5rem 0.75rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.3);
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mode-btn.active {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      background: rgba(6, 182, 212, 0.05);
+    }
+
+    .sidebar-btn {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sidebar-btn-primary {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--color-accent);
+    }
+
+    .sidebar-btn-primary:hover {
+      background: rgba(6, 182, 212, 0.15);
+    }
+
+    .sidebar-btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.3);
+      margin-top: 0.5rem;
+    }
+
+    .sidebar-btn-ghost:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Prospect HUD */
+    #prospect-hud {
+      display: none;
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 100;
+      border: 1px solid rgba(6, 182, 212, 0.15);
+      padding: 0.4rem 0.75rem;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    #prospect-hud.visible { display: block; }
+
+    #prospect-hud .hud-label {
+      font-family: var(--font-mono);
+      font-size: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(6, 182, 212, 0.4);
+    }
+
+    #prospect-hud .hud-name {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(6, 182, 212, 0.7);
+      letter-spacing: 0.1em;
+    }
   </style>
 </head>
 <body>
-  <p>Coming soon</p>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <img src="cold-lava-logo.png" alt="Cold Lava">
+  </div>
+
+  <!-- Scroll Progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- Background Atmosphere -->
+  <div class="section-atmosphere" style="position: fixed; z-index: -1;">
+    <div class="light-stream" style="left:8%;--stream-dur:7s;--stream-delay:0s;"></div>
+    <div class="light-stream" style="left:18%;--stream-dur:9s;--stream-delay:2s;"></div>
+    <div class="light-stream" style="left:30%;--stream-dur:6s;--stream-delay:4s;"></div>
+    <div class="light-stream" style="left:45%;--stream-dur:8s;--stream-delay:1s;"></div>
+    <div class="light-stream" style="left:65%;--stream-dur:7s;--stream-delay:3s;"></div>
+    <div class="light-stream" style="left:80%;--stream-dur:9s;--stream-delay:5s;"></div>
+    <div class="light-stream" style="left:92%;--stream-dur:6s;--stream-delay:2.5s;"></div>
+  </div>
+
+  <!-- Prospect HUD -->
+  <div id="prospect-hud">
+    <div class="hud-label">Prepared for</div>
+    <div class="hud-name" id="prospect-hud-name"></div>
+  </div>
+
+  <!-- Rep Sidebar Toggle -->
+  <button id="sidebar-toggle" aria-label="Open config">Config</button>
+
+  <!-- Rep Sidebar -->
+  <div id="rep-sidebar">
+    <div>
+      <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(6,182,212,0.4); margin-bottom: 1.5rem;">Rep Configuration</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Prospect Name</div>
+      <input type="text" class="sidebar-input" id="prospect-name" placeholder="e.g. Acme Ltd">
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Mode</div>
+      <div>
+        <button class="mode-btn active" id="mode-demo">Demo</button>
+        <button class="mode-btn" id="mode-commercial">Commercial</button>
+        <button class="mode-btn" id="mode-exec">Executive</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Active Tiers</div>
+      <div class="tier-toggle">
+        <input type="checkbox" id="cb-tier1" class="tier-checkbox" data-tier="tier-1" checked>
+        <label for="cb-tier1">T1: Quick-Win Automations</label>
+      </div>
+      <div class="tier-toggle">
+        <input type="checkbox" id="cb-tier2" class="tier-checkbox" data-tier="tier-2" checked>
+        <label for="cb-tier2">T2: Websites & Presentations</label>
+      </div>
+      <div class="tier-toggle">
+        <input type="checkbox" id="cb-tier3" class="tier-checkbox" data-tier="tier-3" checked>
+        <label for="cb-tier3">T3: Dashboards & Intelligence</label>
+      </div>
+      <div class="tier-toggle">
+        <input type="checkbox" id="cb-tier4" class="tier-checkbox" data-tier="tier-4" checked>
+        <label for="cb-tier4">T4: Lead Management</label>
+      </div>
+      <div class="tier-toggle">
+        <input type="checkbox" id="cb-tier5" class="tier-checkbox" data-tier="tier-5" checked>
+        <label for="cb-tier5">T5: AI Employees</label>
+      </div>
+      <div class="tier-toggle">
+        <input type="checkbox" id="cb-tier6" class="tier-checkbox" data-tier="tier-6" checked>
+        <label for="cb-tier6">T6: Business Operating Systems</label>
+      </div>
+    </div>
+
+    <div>
+      <button class="sidebar-btn sidebar-btn-primary" id="apply-config">Apply Changes</button>
+      <button class="sidebar-btn sidebar-btn-ghost" id="reset-config">Reset All</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 1: HERO ===== -->
+  <section class="section fade-in" id="hero" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden;">
+    <!-- Mouse-reactive orb -->
+    <div id="hero-orb" style="position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%); pointer-events: none; transition: transform 0.3s ease-out; z-index: 0; left: 50%; top: 50%; transform: translate(-50%, -50%);"></div>
+
+    <!-- HUD - Top Left -->
+    <div style="position: absolute; top: 2rem; left: 2rem; z-index: 3; display: flex; align-items: center; gap: 1.5rem;">
+      <img src="cold-lava-logo-blue.png" alt="Cold Lava" style="width: 40px; height: 40px;">
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.6);">
+        <span style="color: rgba(255,255,255,0.4);">X</span> <span id="hero-x" style="color: rgba(6, 182, 212, 1);">0000</span>
+        <span style="margin-left: 1.5rem; color: rgba(255,255,255,0.4);">Y</span> <span id="hero-y" style="color: rgba(6, 182, 212, 1);">0000</span>
+      </div>
+    </div>
+
+    <!-- HUD - Top Right -->
+    <div style="position: absolute; top: 2rem; right: 2rem; z-index: 3; text-align: right;">
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.5);">
+        <span style="color: rgba(255,255,255,0.4);">London</span>
+        <span style="margin: 0 0.5rem; color: rgba(255,255,255,0.3);">·</span>
+        <span id="hero-time" style="color: rgba(255,255,255,0.5);">--:--:--</span>
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); margin-top: 0.2rem;">
+        <span id="hero-date">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Corner brackets -->
+    <div style="position: absolute; top: 1.5rem; left: 1.5rem; width: 24px; height: 24px; border-left: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+    <div style="position: absolute; top: 1.5rem; right: 1.5rem; width: 24px; height: 24px; border-right: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+    <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; width: 24px; height: 24px; border-left: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+    <div style="position: absolute; bottom: 1.5rem; right: 1.5rem; width: 24px; height: 24px; border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+
+    <!-- Grain texture -->
+    <div style="position: absolute; inset: 0; background-image: url('data:image/svg+xml,<svg viewBox=\"0 0 256 256\" xmlns=\"http://www.w3.org/2000/svg\"><filter id=\"n\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.9\" numOctaves=\"4\" stitchTiles=\"stitch\"/></filter><rect width=\"100%25\" height=\"100%25\" filter=\"url(%23n)\" opacity=\"0.04\"/></svg>'); pointer-events: none; z-index: 1; opacity: 0.5;"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
+      <div class="label" style="margin-bottom: 2.5rem; animation: fadeInUp 0.8s var(--ease-smooth) 0.2s both; text-align: left;">COLD LAVA / 2026</div>
+      <h1 style="margin-bottom: 2.5rem; animation: fadeInUp 0.8s var(--ease-smooth) 0.4s both; text-align: left; max-width: 1100px; margin-left: 0; margin-right: auto;">
+        <span style="display: block; font-weight: 800;">Built for</span>
+        <span style="display: block; font-style: italic; color: rgba(255,255,255,0.35); font-weight: 400; margin: 0.2em 0;">Your Business</span>
+        <span style="display: block; font-weight: 800;">Not adapted from</span>
+        <span style="display: block; font-weight: 800;">Someone else's.</span>
+      </h1>
+      <p class="lead" style="max-width: 900px; margin: 0; text-align: left; animation: fadeInUp 0.8s var(--ease-smooth) 0.6s both; color: rgba(255,255,255,0.6); font-size: 1.125rem; line-height: 1.7;">
+        Custom software, AI employees, and automation built around how you actually work — not how Silicon Valley thinks you should.
+      </p>
+      <div style="margin-top: 3rem; animation: fadeInUp 0.8s var(--ease-smooth) 0.8s both; text-align: left;">
+        <a href="#the-problem" style="display: inline-flex; align-items: center; gap: 0.75rem; background: white; color: black; padding: 1rem 2rem; text-decoration: none; font-weight: 600; font-size: 1rem; border: 2px solid white; transition: all 0.3s var(--ease-smooth);" onmouseover="this.style.background='transparent'; this.style.color='white';" onmouseout="this.style.background='white'; this.style.color='black';">
+          Explore What We Build
+          <span style="font-size: 1.2rem;">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div style="overflow: hidden; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 1.5rem 0; position: relative;">
+    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 6rem; background: linear-gradient(to right, rgba(0,0,0,1), transparent); z-index: 10; pointer-events: none;"></div>
+    <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 6rem; background: linear-gradient(to left, rgba(0,0,0,1), transparent); z-index: 10; pointer-events: none;"></div>
+    <div style="display: flex; animation: ticker 40s linear infinite; width: max-content;">
+      <div style="display: flex; gap: 3rem; padding-right: 3rem; align-items: center;">
+        <img src="logos/nextjs.png" alt="Next.js" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/react.svg" alt="React" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/vercel.svg" alt="Vercel" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/nodejs.svg" alt="Node.js" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/github.png" alt="GitHub" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/python.svg" alt="Python" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/supabase.svg" alt="Supabase" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/postgresql.svg" alt="PostgreSQL" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/aws.svg" alt="AWS" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/openai.svg" alt="OpenAI" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/claude.svg" alt="Claude" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/whatsapp.svg" alt="WhatsApp" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/n8n.svg" alt="n8n" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/stripe.svg" alt="Stripe" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/hubspot.png" alt="HubSpot" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/shopify.svg" alt="Shopify" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/twilio.svg" alt="Twilio" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/typescript.svg" alt="TypeScript" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/docker.svg" alt="Docker" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/make.png" alt="Make" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+      </div>
+      <div style="display: flex; gap: 3rem; padding-right: 3rem; align-items: center;">
+        <img src="logos/nextjs.png" alt="Next.js" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/react.svg" alt="React" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/vercel.svg" alt="Vercel" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/nodejs.svg" alt="Node.js" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/github.png" alt="GitHub" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/python.svg" alt="Python" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/supabase.svg" alt="Supabase" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/postgresql.svg" alt="PostgreSQL" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/aws.svg" alt="AWS" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/openai.svg" alt="OpenAI" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/claude.svg" alt="Claude" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/whatsapp.svg" alt="WhatsApp" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/n8n.svg" alt="n8n" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/stripe.svg" alt="Stripe" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/hubspot.png" alt="HubSpot" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/shopify.svg" alt="Shopify" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/twilio.svg" alt="Twilio" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/typescript.svg" alt="TypeScript" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/docker.svg" alt="Docker" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+        <img src="logos/make.png" alt="Make" style="height: 2.5rem; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.5s;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: THE PROBLEM ===== -->
+  <section class="section fade-in" id="the-problem" style="position: relative;">
+    <div class="container">
+      <div class="label" style="margin-bottom: 1rem;">The Problem / 001</div>
+      <h2 style="margin-bottom: 3rem; max-width: 800px;">Most Businesses Are Running on Systems Built for Someone Else</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem;">
+
+        <div style="position: relative; border: 1px solid rgba(6,182,212,0.15); padding: 2rem; background: rgba(6,182,212,0.02);">
+          <div style="position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-left: 1px solid rgba(6,182,212,0.3); border-top: 1px solid rgba(6,182,212,0.3);"></div>
+          <div style="position: absolute; top: 8px; right: 8px; width: 16px; height: 16px; border-right: 1px solid rgba(6,182,212,0.3); border-top: 1px solid rgba(6,182,212,0.3);"></div>
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(6,182,212,0.6); margin-bottom: 1rem;">The Generic Software Trap</div>
+          <p style="color: rgba(255,255,255,0.6); line-height: 1.7; font-size: 0.95rem;">Off-the-shelf tools make you adapt YOUR process to THEIR logic. You end up with workarounds, manual steps, and frustrated staff.</p>
+        </div>
+
+        <div style="position: relative; border: 1px solid rgba(6,182,212,0.15); padding: 2rem; background: rgba(6,182,212,0.02);">
+          <div style="position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-left: 1px solid rgba(6,182,212,0.3); border-top: 1px solid rgba(6,182,212,0.3);"></div>
+          <div style="position: absolute; top: 8px; right: 8px; width: 16px; height: 16px; border-right: 1px solid rgba(6,182,212,0.3); border-top: 1px solid rgba(6,182,212,0.3);"></div>
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(6,182,212,0.6); margin-bottom: 1rem;">The AI Hype Trap</div>
+          <p style="color: rgba(255,255,255,0.6); line-height: 1.7; font-size: 0.95rem;">Adopting tools just because they're new, without a clear fit, wastes budget and creates chaos — not efficiency.</p>
+        </div>
+
+      </div>
+
+      <div style="max-width: 900px; margin: 3rem auto;">
+        <h3 style="font-size: 1.4rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">Sound familiar?</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="border-left: 2px solid rgba(6,182,212,0.3); padding-left: 1.5rem;">
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.7;">Leads arrive after hours. Nobody answers. Revenue walks away.</p>
+          </div>
+          <div style="border-left: 2px solid rgba(6,182,212,0.3); padding-left: 1.5rem;">
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.7;">Three systems that don't talk to each other. Data lives in spreadsheets.</p>
+          </div>
+          <div style="border-left: 2px solid rgba(6,182,212,0.3); padding-left: 1.5rem;">
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.7;">Your best people buried in admin, not the work that actually grows the business.</p>
+          </div>
+          <div style="border-left: 2px solid rgba(6,182,212,0.3); padding-left: 1.5rem;">
+            <p style="color: rgba(255,255,255,0.7); line-height: 1.7;">Software that does 80% of what you need — and the 20% gap costs you every day.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 4rem; padding: 2rem; border-top: 1px solid rgba(6,182,212,0.2); border-bottom: 1px solid rgba(6,182,212,0.2);">
+        <p style="font-size: 1.2rem; color: var(--color-accent); font-weight: 500;">
+          The fix isn't more software. It's software built specifically for YOU.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: WHO IS COLD LAVA ===== -->
+  <section class="section fade-in" id="company">
+    <div class="container">
+      <div class="label" style="margin-bottom: 1rem;">Company / 002</div>
+      <h2 style="margin-bottom: 3rem;">Who Is Cold Lava</h2>
+
+      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: start;">
+
+        <div>
+          <p class="lead" style="margin-bottom: 3rem;">
+            We're a UK-based software and AI company. We don't sell templates. We don't outsource. Every system we build is written from scratch, by our in-house team, around YOUR business — not the other way round.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 2rem;">
+
+            <div class="card with-corners with-grid" style="transform: translateX(0);">
+              <div class="grid-pattern"></div>
+              <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--color-accent);">Bespoke Systems, Not Templates</h3>
+              <p style="color: var(--color-text-secondary);">Built around how you work, not how a generic platform thinks you should work.</p>
+            </div>
+
+            <div class="card with-corners with-grid" style="transform: translateX(2rem);">
+              <div class="grid-pattern"></div>
+              <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--color-accent);">Real Business Experience</h3>
+              <p style="color: var(--color-text-secondary);">We've built and run real businesses. We know the pain points because we've lived them.</p>
+            </div>
+
+            <div class="card with-corners with-grid" style="transform: translateX(4rem);">
+              <div class="grid-pattern"></div>
+              <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--color-accent);">Enterprise Quality, Startup Speed</h3>
+              <p style="color: var(--color-text-secondary);">You get the quality of a major agency at a fraction of the price and timeline.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="position: sticky; top: 6rem;">
+          <div class="card with-corners" style="padding: 2.5rem; background: rgba(212,175,55,0.05); border-color: rgba(212,175,55,0.2);">
+            <div style="margin-bottom: 1.5rem;">
+              <div class="label" style="color: var(--color-gold);">Mission / Philosophy</div>
+            </div>
+            <p style="font-size: 1.1rem; line-height: 1.6; font-style: italic; color: var(--color-text-secondary);">
+              "We exist to help UK businesses ditch off-the-shelf software and adopt bespoke AI-powered systems that actually fit how they work."
+            </p>
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(212,175,55,0.2);">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-gold);">Jacob Johnson</div>
+              <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.25rem;">Director, Cold Lava</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 4: OUR PROCESS ===== -->
+  <section class="section fade-in" id="process" style="padding: 6rem 0; border-top: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; opacity: 0.015; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+    <div class="container" style="position: relative;">
+      <div style="margin-bottom: 3rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+          <div style="height: 1px; width: 3rem; background: rgba(6,182,212,0.4);"></div>
+          <p style="font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.3);">Process / 003</p>
+        </div>
+        <h2 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1;">
+          No <span style="color: rgba(6,182,212,1);">surprises</span><br>No black boxes
+        </h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 35% 65%; gap: 4rem; align-items: start;">
+
+        <!-- Left: Philosophy -->
+        <div>
+          <div style="position: relative; border: 1px solid rgba(255,255,255,0.05); padding: 2rem; margin-bottom: 3rem;">
+            <div style="position: absolute; top: -0.75rem; left: 1.5rem; background: black; padding: 0 0.75rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(6,182,212,0.4); text-transform: uppercase; letter-spacing: 0.15em;">Philosophy</span>
+            </div>
+            <div style="position: absolute; top: 0; left: 0; width: 1.25rem; height: 1.25rem; border-left: 2px solid rgba(6,182,212,0.2); border-top: 2px solid rgba(6,182,212,0.2);"></div>
+            <div style="position: absolute; top: 0; right: 0; width: 1.25rem; height: 1.25rem; border-right: 2px solid rgba(6,182,212,0.2); border-top: 2px solid rgba(6,182,212,0.2);"></div>
+            <div style="position: absolute; bottom: 0; left: 0; width: 1.25rem; height: 1.25rem; border-left: 2px solid rgba(6,182,212,0.2); border-bottom: 2px solid rgba(6,182,212,0.2);"></div>
+            <div style="position: absolute; bottom: 0; right: 0; width: 1.25rem; height: 1.25rem; border-right: 2px solid rgba(6,182,212,0.2); border-bottom: 2px solid rgba(6,182,212,0.2);"></div>
+            <p style="font-family: var(--font-mono); font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.7;">
+              Good, fast, cheap. You can only pick two. We optimise for <span style="color: rgba(6,182,212,0.8);">good</span>.
+            </p>
+          </div>
+
+          <div style="position: relative;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+              <div style="height: 1px; width: 1.5rem; background: rgba(6,182,212,0.2);"></div>
+              <span style="font-family: var(--font-mono); font-size: 0.5625rem; color: rgba(6,182,212,0.4); text-transform: uppercase; letter-spacing: 0.15em;">Our Commitments</span>
+              <div style="height: 1px; flex: 1; background: rgba(255,255,255,0.05);"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.3); border-radius: 50%;"></div>
+                <div style="width: 8px; height: 1px; background: rgba(6,182,212,0.2);"></div>
+                <span style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Transparent Pricing</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.3); border-radius: 50%;"></div>
+                <div style="width: 8px; height: 1px; background: rgba(6,182,212,0.2);"></div>
+                <span style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Fast Delivery</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.3); border-radius: 50%;"></div>
+                <div style="width: 8px; height: 1px; background: rgba(6,182,212,0.2);"></div>
+                <span style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">GDPR Compliant</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.3); border-radius: 50%;"></div>
+                <div style="width: 8px; height: 1px; background: rgba(6,182,212,0.2);"></div>
+                <span style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Full Support</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.3); border-radius: 50%;"></div>
+                <div style="width: 8px; height: 1px; background: rgba(6,182,212,0.2);"></div>
+                <span style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Code Ownership</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.3); border-radius: 50%;"></div>
+                <div style="width: 8px; height: 1px; background: rgba(6,182,212,0.2);"></div>
+                <span style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">UK Based Team</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Wave Animation -->
+        <div class="workflow-container" style="display: none; position: relative;">
+          <div style="position: relative;">
+            <!-- Top row cards -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 8%; z-index: 10;">
+              <div style="position: relative; margin-left: 8%;">
+                <div class="workflow-box" style="margin-bottom: 2rem;">
+                  <div style="position: absolute; left: 50%; transform: translateX(-50%); width: 1px; background: linear-gradient(to bottom, rgba(6,182,212,0.4), transparent); top: 100%; height: 2rem;"></div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; position: relative; z-index: 10;">
+                    <div style="width: 0.5rem; height: 0.5rem; background: rgba(6,182,212,0.6);"></div>
+                    <span style="font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(6,182,212,0.5);">01</span>
+                    <div style="flex: 1; height: 1px; background: linear-gradient(to right, rgba(6,182,212,0.3), transparent);"></div>
+                  </div>
+                  <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; z-index: 10; line-height: 1.2; color: rgba(6,182,212,0.95);">Diagnose</h3>
+                  <p class="workflow-box-subtitle">Understanding your business, not just requirements.</p>
+                </div>
+              </div>
+              <div style="position: relative; margin-right: 8%;">
+                <div class="workflow-box" style="margin-bottom: 2rem;">
+                  <div style="position: absolute; left: 50%; transform: translateX(-50%); width: 1px; background: linear-gradient(to bottom, rgba(6,182,212,0.4), transparent); top: 100%; height: 2rem;"></div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; position: relative; z-index: 10;">
+                    <div style="width: 0.5rem; height: 0.5rem; background: rgba(6,182,212,0.6);"></div>
+                    <span style="font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(6,182,212,0.5);">03</span>
+                    <div style="flex: 1; height: 1px; background: linear-gradient(to right, rgba(6,182,212,0.3), transparent);"></div>
+                  </div>
+                  <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; z-index: 10; line-height: 1.2; color: rgba(6,182,212,0.95);">Build</h3>
+                  <p class="workflow-box-subtitle">Short cycles with regular check-ins. Weekly progress.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wave SVG -->
+            <div style="position: relative; z-index: 0;">
+              <div style="position: relative; width: 100%; height: 300px; display: flex; align-items: center; justify-content: center;">
+                <svg viewBox="0 0 800 300" style="width: 100%; height: 100%;" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <filter id="waveGlow">
+                      <feGaussianBlur stdDeviation="2" result="coloredBlur"></feGaussianBlur>
+                      <feMerge><feMergeNode in="coloredBlur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+                    </filter>
+                    <path id="wavePath" d="M 0,150 C 50,50 150,50 200,150 C 250,250 350,250 400,150 C 450,50 550,50 600,150 C 650,250 750,250 800,150"></path>
+                  </defs>
+                  <path d="M 0,150 C 50,50 150,50 200,150 C 250,250 350,250 400,150 C 450,50 550,50 600,150 C 650,250 750,250 800,150" fill="none" stroke="rgba(6,182,212,0.2)" stroke-width="2" stroke-dasharray="8 4" filter="url(#waveGlow)"></path>
+                  <g transform="translate(-12, -12)">
+                    <image href="cold-lava-icon.png" x="0" y="0" width="24" height="24" opacity="1"></image>
+                    <animateMotion dur="12s" repeatCount="indefinite" rotate="auto">
+                      <mpath href="#wavePath"></mpath>
+                    </animateMotion>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Bottom row cards -->
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 8%; z-index: 10;">
+              <div style="position: relative; margin-left: 28%;">
+                <div class="workflow-box" style="margin-top: 2rem;">
+                  <div style="position: absolute; left: 50%; transform: translateX(-50%); width: 1px; background: linear-gradient(to top, rgba(6,182,212,0.4), transparent); bottom: 100%; height: 2rem;"></div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; position: relative; z-index: 10;">
+                    <div style="width: 0.5rem; height: 0.5rem; background: rgba(6,182,212,0.6);"></div>
+                    <span style="font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(6,182,212,0.5);">02</span>
+                    <div style="flex: 1; height: 1px; background: linear-gradient(to right, rgba(6,182,212,0.3), transparent);"></div>
+                  </div>
+                  <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; z-index: 10; line-height: 1.2; color: rgba(6,182,212,0.95);">Design</h3>
+                  <p class="workflow-box-subtitle">Clear scope, timeline, and cost before any code.</p>
+                </div>
+              </div>
+              <div style="position: relative; margin-right: 0%;">
+                <div class="workflow-box" style="margin-top: 2rem;">
+                  <div style="position: absolute; left: 50%; transform: translateX(-50%); width: 1px; background: linear-gradient(to top, rgba(6,182,212,0.4), transparent); bottom: 100%; height: 2rem;"></div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; position: relative; z-index: 10;">
+                    <div style="width: 0.5rem; height: 0.5rem; background: rgba(6,182,212,0.6);"></div>
+                    <span style="font-family: var(--font-mono); font-size: 0.5625rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(6,182,212,0.5);">04</span>
+                    <div style="flex: 1; height: 1px; background: linear-gradient(to right, rgba(6,182,212,0.3), transparent);"></div>
+                  </div>
+                  <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; z-index: 10; line-height: 1.2; color: rgba(6,182,212,0.95);">Support</h3>
+                  <p class="workflow-box-subtitle">Launch isn't the end. We optimise as you grow.</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+              <div style="display: inline-flex; align-items: center; gap: 0.75rem;">
+                <div style="height: 1px; width: 2rem; background: rgba(6,182,212,0.2);"></div>
+                <p style="font-family: var(--font-mono); font-size: 0.625rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;">Continuous Development Cycle</p>
+                <div style="height: 1px; width: 2rem; background: rgba(6,182,212,0.2);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 5: HOW WE HELP (PRODUCT TIERS) ===== -->
+  <section class="section fade-in" id="products">
+    <div class="container">
+      <div class="label" style="margin-bottom: 1rem;">How We Help / 004</div>
+      <h2 style="margin-bottom: 1.5rem;">Ways We Help Businesses Scale</h2>
+      <p class="lead" style="max-width: 800px; margin-bottom: 4rem; color: rgba(255,255,255,0.5);">
+        We build systems across six areas. Every solution is bespoke — built around your business, not adapted from a template. Below are examples of what we've built for clients like you.
+      </p>
+
+      <div class="products-accordion">
+
+        <!-- TIER 1: Quick-Win Automations -->
+        <div class="tier-item" id="tier-1">
+          <div class="tier-header" onclick="toggleTier(this)">
+            <span class="tier-number">01</span>
+            <div class="tier-line"></div>
+            <span class="tier-name">Quick-Win Automations</span>
+            <span class="tier-badge">Entry Level</span>
+            <svg class="tier-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="tier-body">
+            <div class="tier-content">
+              <p class="tier-description">Low-friction, high-impact automations that pay for themselves in weeks.</p>
+
+              <div class="psych-block">
+                <div class="psych-label">The Opportunity</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--color-text-primary);">Most businesses are leaking 3–5 hours a week on tasks that take an AI system 3 seconds.</h3>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">The Reality</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Reviews go unanswered. Calls go missed. Reminders get forgotten. Not because your team is bad — because they're human, and humans have limits.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">What It Looks Like When It's Solved</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Automated Google review responses posted in seconds. Missed calls followed up by text in under 2 minutes. Appointment reminders sent without a staff member lifting a finger.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">How It Works</div>
+                <div class="demo-area">
+                  <div class="demo-label">Automation Flow</div>
+                  <div class="workflow-demo">
+                    <div class="workflow-node">
+                      <div class="node-icon">⚡</div>
+                      <div class="node-title">Trigger</div>
+                      <div class="node-sub">Event happens</div>
+                    </div>
+                    <div class="workflow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                    <div class="workflow-node">
+                      <div class="node-icon">🤖</div>
+                      <div class="node-title">AI Processes</div>
+                      <div class="node-sub">Instant response</div>
+                    </div>
+                    <div class="workflow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                    <div class="workflow-node">
+                      <div class="node-icon">📤</div>
+                      <div class="node-title">Action</div>
+                      <div class="node-sub">Personalised message</div>
+                    </div>
+                    <div class="workflow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                    <div class="workflow-node">
+                      <div class="node-icon">📊</div>
+                      <div class="node-title">Dashboard</div>
+                      <div class="node-sub">Track results</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                  <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); margin-bottom: 0.75rem;">Examples</div>
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--color-text-secondary);">
+                      <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.4); border-radius: 50%;"></div>
+                      Google Review Auto-Responder + Review Request
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--color-text-secondary);">
+                      <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.4); border-radius: 50%;"></div>
+                      Missed Call Text-Back (under 2 minutes)
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--color-text-secondary);">
+                      <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.4); border-radius: 50%;"></div>
+                      Appointment Reminder System
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-proof">
+                <blockquote>"We set up the missed call text-back and review system in a week. Our response rate went from basically nothing to over 40%."</blockquote>
+                <cite>— Solar installer, South East England</cite>
+              </div>
+
+              <div style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(6,182,212,0.1); background: rgba(6,182,212,0.02);">
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.6;">Is this relevant to your business? We can show you exactly how this would work for you — specific to your industry, your volume, your process.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIER 2: Websites & Presentations -->
+        <div class="tier-item" id="tier-2">
+          <div class="tier-header" onclick="toggleTier(this)">
+            <span class="tier-number">02</span>
+            <div class="tier-line"></div>
+            <span class="tier-name">Premium Websites & Presentations</span>
+            <span class="tier-badge">Foundation</span>
+            <svg class="tier-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="tier-body">
+            <div class="tier-content">
+              <p class="tier-description">Websites and presentations that actually convert — not templates, not Squarespace, not "good enough."</p>
+
+              <div class="psych-block">
+                <div class="psych-label">The Opportunity</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--color-text-primary);">Your website is your best salesperson. Most businesses are sending prospects to a CV from 2019.</h3>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">The Reality</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Generic website builders give you a site that looks like 10,000 other companies. It loads slow, doesn't reflect your brand, and doesn't convert.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">What It Looks Like When It's Solved</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">A website that loads in under 2 seconds, looks like it cost 10x what it did, and is built to convert visitors into enquiries. Custom-coded. No page builders. You own every line.</p>
+              </div>
+
+              <!-- Website Demos -->
+              <div class="demo-area">
+                <div class="demo-label">Client Websites — Live</div>
+                <div style="display: flex; flex-direction: column; gap: 3rem;">
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Greenstar Solar</div>
+                    <div class="device-showcase">
+                      <div class="device-mockup">
+                        <div class="device-label">Desktop</div>
+                        <div class="laptop-frame">
+                          <iframe src="https://gs-website-oct25-ppq7bdf1i-olivers-projects-a3cbd2e0.vercel.app" loading="lazy"></iframe>
+                        </div>
+                        <div class="laptop-base"></div>
+                      </div>
+                      <div class="device-mockup">
+                        <div class="device-label">Mobile</div>
+                        <div class="phone-frame">
+                          <iframe src="https://gs-website-oct25-ppq7bdf1i-olivers-projects-a3cbd2e0.vercel.app" loading="lazy"></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Liverpool Cotton Brokers</div>
+                    <div class="device-showcase">
+                      <div class="device-mockup">
+                        <div class="device-label">Desktop</div>
+                        <div class="laptop-frame">
+                          <iframe src="https://lcb-website-jan2026-8cx4ow749-olivers-projects-a3cbd2e0.vercel.app" loading="lazy"></iframe>
+                        </div>
+                        <div class="laptop-base"></div>
+                      </div>
+                      <div class="device-mockup">
+                        <div class="device-label">Mobile</div>
+                        <div class="phone-frame">
+                          <iframe src="https://lcb-website-jan2026-8cx4ow749-olivers-projects-a3cbd2e0.vercel.app" loading="lazy"></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Cold Lava</div>
+                    <div class="device-showcase">
+                      <div class="device-mockup">
+                        <div class="device-label">Desktop</div>
+                        <div class="laptop-frame">
+                          <iframe src="https://cl-website-jul25-hyl51g61g-olivers-projects-a3cbd2e0.vercel.app" loading="lazy"></iframe>
+                        </div>
+                        <div class="laptop-base"></div>
+                      </div>
+                      <div class="device-mockup">
+                        <div class="device-label">Mobile</div>
+                        <div class="phone-frame">
+                          <iframe src="https://cl-website-jul25-hyl51g61g-olivers-projects-a3cbd2e0.vercel.app" loading="lazy"></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Presentations -->
+              <div class="demo-area" style="margin-top: 3rem;">
+                <div class="demo-label">Client Presentations — Live</div>
+                <div style="display: flex; flex-direction: column; gap: 3rem;">
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Trading Intelligence</div>
+                    <div class="device-showcase">
+                      <div class="device-mockup">
+                        <div class="device-label">Desktop</div>
+                        <div class="laptop-frame">
+                          <iframe src="https://trading-intelligence-deck.coldlava.ai" loading="lazy"></iframe>
+                        </div>
+                        <div class="laptop-base"></div>
+                      </div>
+                      <div class="device-mockup">
+                        <div class="device-label">Mobile</div>
+                        <div class="phone-frame">
+                          <iframe src="https://trading-intelligence-deck.coldlava.ai" loading="lazy"></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Aztec Arc</div>
+                    <div class="device-showcase">
+                      <div class="device-mockup">
+                        <div class="device-label">Desktop</div>
+                        <div class="laptop-frame">
+                          <iframe src="https://aztecarc.coldlava.ai" loading="lazy"></iframe>
+                        </div>
+                        <div class="laptop-base"></div>
+                      </div>
+                      <div class="device-mockup">
+                        <div class="device-label">Mobile</div>
+                        <div class="phone-frame">
+                          <iframe src="https://aztecarc.coldlava.ai" loading="lazy"></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="social-proof">
+                <blockquote>"The new website completely changed how prospects perceive us. We went from 'who are these guys?' to winning contracts on the first call."</blockquote>
+                <cite>— Liverpool Cotton Brokers</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIER 3: Dashboards & Intelligence -->
+        <div class="tier-item" id="tier-3">
+          <div class="tier-header" onclick="toggleTier(this)">
+            <span class="tier-number">03</span>
+            <div class="tier-line"></div>
+            <span class="tier-name">Custom Dashboards & Business Intelligence</span>
+            <span class="tier-badge">Intelligence</span>
+            <svg class="tier-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="tier-body">
+            <div class="tier-content">
+              <p class="tier-description">Real-time visibility into your business — not spreadsheets, not generic reports.</p>
+
+              <div class="psych-block">
+                <div class="psych-label">The Opportunity</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--color-text-primary);">If you can't see your business in real-time, you're always reacting — never leading.</h3>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">The Reality</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Most business owners are making decisions based on data that's 3 days old, formatted in a spreadsheet, manually updated by someone who's already behind on other things.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">What It Looks Like When It's Solved</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">One dashboard. Live data. Every KPI you care about — updated in real-time. On your phone or any screen, anywhere. We connect to your existing data sources. You get visibility without changing how you work.</p>
+              </div>
+
+              <div class="demo-area">
+                <div class="demo-label">Live Dashboard Demo</div>
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 0.75rem;">Solar Database Reactivation Dashboard</div>
+                    <div class="demo-frame-wrapper">
+                      <iframe src="https://cl-solarbos-jan-26-f903hpt6x-olivers-projects-a3cbd2e0.vercel.app" style="height: 500px;" loading="lazy"></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-proof">
+                <blockquote>"I used to spend Friday afternoons pulling reports. Now I open the dashboard on my phone. Job done."</blockquote>
+                <cite>— Business owner</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIER 4: Lead Management -->
+        <div class="tier-item" id="tier-4">
+          <div class="tier-header" onclick="toggleTier(this)">
+            <span class="tier-number">04</span>
+            <div class="tier-line"></div>
+            <span class="tier-name">Automated Lead Management Systems</span>
+            <span class="tier-badge">Growth</span>
+            <svg class="tier-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="tier-body">
+            <div class="tier-content">
+              <p class="tier-description">Stop losing leads to slow follow-up. Every lead gets instant, intelligent, personalised contact — automatically.</p>
+
+              <div class="psych-block">
+                <div class="psych-label">The Opportunity</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--color-text-primary);">You've got leads sitting in your CRM right now that could become clients. They're just waiting for someone to follow up.</h3>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">The Reality</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Speed to lead is everything. The business that responds first wins. But manual follow-up is slow, inconsistent, and expensive.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">What It Looks Like When It's Solved</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Every new lead gets a personalised email within 60 seconds. Qualified automatically. Appointment booked without a sales rep involved. You only speak to serious prospects.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">How It Works</div>
+                <div class="demo-area">
+                  <div class="demo-label">Lead Pipeline Flow</div>
+                  <div class="workflow-demo">
+                    <div class="workflow-node">
+                      <div class="node-icon">📥</div>
+                      <div class="node-title">Lead Arrives</div>
+                      <div class="node-sub">Web, ad, referral</div>
+                    </div>
+                    <div class="workflow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                    <div class="workflow-node">
+                      <div class="node-icon">🧠</div>
+                      <div class="node-title">AI Qualifies</div>
+                      <div class="node-sub">Email + SMS + WhatsApp</div>
+                    </div>
+                    <div class="workflow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                    <div class="workflow-node">
+                      <div class="node-icon">📅</div>
+                      <div class="node-title">Books Appointment</div>
+                      <div class="node-sub">Into your calendar</div>
+                    </div>
+                    <div class="workflow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                    <div class="workflow-node">
+                      <div class="node-icon">📊</div>
+                      <div class="node-title">CRM Updated</div>
+                      <div class="node-sub">Everything tracked</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1.25rem; border: 1px solid rgba(6,182,212,0.1);">
+                  <div style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 0.75rem;">Deployment Options</div>
+                  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--color-text-secondary);">
+                      <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.4); border-radius: 50%;"></div>
+                      Build custom software you own outright
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--color-text-secondary);">
+                      <div style="width: 4px; height: 4px; background: rgba(6,182,212,0.4); border-radius: 50%;"></div>
+                      Embed into your existing CRM (HubSpot, Salesforce, GoHighLevel, etc.)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-proof">
+                <blockquote>"We had 5,000 old leads sitting untouched. The reactivation system booked 47 appointments in the first month."</blockquote>
+                <cite>— Solar company, UK</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIER 5: AI Employees -->
+        <div class="tier-item flagship-glow" id="tier-5">
+          <div class="tier-header" onclick="toggleTier(this)">
+            <span class="tier-number">05</span>
+            <div class="tier-line"></div>
+            <span class="tier-name">AI Employees</span>
+            <span class="tier-badge" style="border-color: rgba(212,175,55,0.5); color: var(--color-gold);">Flagship</span>
+            <svg class="tier-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="tier-body">
+            <div class="tier-content">
+              <p class="tier-description">An AI employee you control via voice notes — exactly like instructing a human team member.</p>
+
+              <div class="psych-block">
+                <div class="psych-label">The Opportunity</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--color-text-primary);">What if you could hire a team member that never sleeps, never gets overwhelmed, and costs less per month than a gym membership?</h3>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">The Reality</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Hiring is expensive. Training takes months. And even great employees have limits — they can't be in multiple places, handle 500 tasks simultaneously, or work at 3am.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">What It Looks Like When It's Solved</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">An AI employee that executes your instructions via voice note. <span style="color: var(--color-accent);">"Chase up any customers who got quotes in the last 5 days."</span> Done. <span style="color: var(--color-accent);">"Update the website header."</span> Done. <span style="color: var(--color-accent);">"Pull all leads from last week and send them a follow-up."</span> Done.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">Live Demo</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 1rem;">
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Example Conversation</div>
+                    <div class="whatsapp-mockup">
+                      <div class="wa-header">
+                        <div class="wa-avatar">🤖</div>
+                        <div>
+                          <div class="wa-name">AI Employee</div>
+                          <div class="wa-status">online</div>
+                        </div>
+                      </div>
+                      <div class="wa-messages">
+                        <div class="wa-msg sent voice">
+                          <span style="font-size: 1rem;">🎤</span>
+                          <div>
+                            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">Voice note · 0:12</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.25rem; font-style: italic;">"Chase everyone who got a quote in the last 5 days and hasn't replied yet"</div>
+                          </div>
+                          <span class="wa-time">09:14</span>
+                        </div>
+                        <div class="wa-msg received">
+                          Got it. I can see 23 quotes sent in the last 5 days with no response. Sending personalised follow-ups now. I'll update the CRM as replies come in.
+                          <span class="wa-time">09:14</span>
+                        </div>
+                        <div class="wa-msg received">
+                          Done. 23 follow-ups sent. 4 have already replied — 2 want to proceed. Shall I book them in?
+                          <span class="wa-time">09:17</span>
+                        </div>
+                        <div class="wa-msg sent">
+                          Yes, book them both in for this week.
+                          <span class="wa-time">09:18</span>
+                        </div>
+                        <div class="wa-msg received">
+                          Booked. Sarah Johnson — Thursday 2pm. Marcus Webb — Friday 10am. Calendar invites sent to both.
+                          <span class="wa-time">09:18</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="font-family: var(--font-mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); margin-bottom: 1rem;">Capabilities</div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                      <div style="padding: 1rem; border: 1px solid rgba(6,182,212,0.1); background: rgba(6,182,212,0.02);">
+                        <div style="font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.5rem;">Works via voice note</div>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted);">Exactly like WhatsApp. Say what you need, it does it.</p>
+                      </div>
+                      <div style="padding: 1rem; border: 1px solid rgba(6,182,212,0.1); background: rgba(6,182,212,0.02);">
+                        <div style="font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.5rem;">Any system</div>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted);">CRM, website, database, email, calendar — works with what you already have.</p>
+                      </div>
+                      <div style="padding: 1rem; border: 1px solid rgba(6,182,212,0.1); background: rgba(6,182,212,0.02);">
+                        <div style="font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.5rem;">Always on</div>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted);">24/7. No sick days. No training time. No HR overhead.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-proof">
+                <blockquote>"I told it to 'follow up with everyone who hasn't responded to last month's quote' via voice note on my commute. By the time I got to the office, it was done."</blockquote>
+                <cite>— Business owner</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIER 6: Business Operating Systems -->
+        <div class="tier-item flagship-glow" id="tier-6">
+          <div class="tier-header" onclick="toggleTier(this)">
+            <span class="tier-number">06</span>
+            <div class="tier-line"></div>
+            <span class="tier-name">Business Operating Systems</span>
+            <span class="tier-badge" style="border-color: rgba(212,175,55,0.5); color: var(--color-gold);">Premium</span>
+            <svg class="tier-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="tier-body">
+            <div class="tier-content">
+              <p class="tier-description">A fully bespoke operating system for your business — built around how YOU work, not how generic software thinks you should.</p>
+
+              <div class="psych-block">
+                <div class="psych-label">The Opportunity</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--color-text-primary);">The most successful businesses in 10 years won't be running HubSpot or Salesforce. They'll be running their own bespoke systems that competitors can't copy.</h3>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">The Reality</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">Off-the-shelf software forces you to change how YOUR business works to fit THEIR logic. You end up with workarounds, manual steps, and paying for features you don't need while missing the ones you do.</p>
+              </div>
+
+              <div class="psych-block">
+                <div class="psych-label">What It Looks Like When It's Solved</div>
+                <p style="color: var(--color-text-secondary); font-size: 1rem; line-height: 1.7;">A complete business operating system built from the ground up for your exact workflow. One place for everything — customers, jobs, finance, compliance, team — all connected, all real-time, all yours. Built and deployed in phases (you see working software every 2 weeks). You own every line of code, every database, every feature.</p>
+              </div>
+
+              <!-- BOS Demos -->
+              <div class="demo-area">
+                <div class="demo-label">Live BOS Examples</div>
+
+                <div class="bos-tabs">
+                  <button class="bos-tab active" onclick="switchBosTab(this, 'bos-solar')">Solar BOS</button>
+                  <button class="bos-tab" onclick="switchBosTab(this, 'bos-detail')">Detail Dynamics</button>
+                  <button class="bos-tab" onclick="switchBosTab(this, 'bos-trading')">Trading Intelligence</button>
+                  <button class="bos-tab" onclick="switchBosTab(this, 'bos-aztec')">Aztec Blueprint</button>
+                </div>
+
+                <div style="border: 1px solid rgba(6,182,212,0.2); border-top: none;">
+
+                  <div id="bos-solar" class="bos-panel active">
+                    <div class="demo-frame-wrapper" style="border: none;">
+                      <iframe src="https://cl-solarbos-jan-26-f903hpt6x-olivers-projects-a3cbd2e0.vercel.app" style="height: 600px;" loading="lazy"></iframe>
+                    </div>
+                  </div>
+
+                  <div id="bos-detail" class="bos-panel">
+                    <div style="padding: 3rem; text-align: center; color: rgba(255,255,255,0.3);">
+                      <div style="font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;">Coming Soon</div>
+                      <p style="font-size: 0.9rem;">Detail Dynamics BOS — live demo coming shortly.</p>
+                    </div>
+                  </div>
+
+                  <div id="bos-trading" class="bos-panel">
+                    <div class="demo-frame-wrapper" style="border: none;">
+                      <iframe src="https://trading-intelligence-deck.coldlava.ai" style="height: 600px;" loading="lazy"></iframe>
+                    </div>
+                  </div>
+
+                  <div id="bos-aztec" class="bos-panel">
+                    <div class="demo-frame-wrapper" style="border: none;">
+                      <iframe src="https://aztecarc.coldlava.ai" style="height: 600px;" loading="lazy"></iframe>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="social-proof">
+                <blockquote>"We replaced four separate systems with one. The time saved per week is equivalent to hiring two more people."</blockquote>
+                <cite>— Solar BOS client</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 6: WHY COLD LAVA ===== -->
+  <section class="section fade-in" id="why-us">
+    <div class="container">
+      <div class="label" style="margin-bottom: 1rem;">Why Us / 005</div>
+      <h2 style="margin-bottom: 1.5rem;">What Makes Us Different</h2>
+      <p class="lead" style="max-width: 700px; margin-bottom: 4rem; color: rgba(255,255,255,0.5);">Six reasons why ambitious UK businesses choose Cold Lava.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+
+        <div class="card with-corners fade-in">
+          <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">100% UK-Based Team</h3>
+          <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">Every line of code written in-house, in the UK. No outsourcing. No offshoring. You always know who's working on your business.</p>
+        </div>
+
+        <div class="card with-corners fade-in">
+          <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">Built From Scratch</h3>
+          <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">We don't use templates. Everything is custom-built around your exact requirements. No compromises.</p>
+        </div>
+
+        <div class="card with-corners fade-in">
+          <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">Real Business Experience</h3>
+          <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">We've built and run real businesses. We understand what actually matters — not just what sounds good in a pitch.</p>
+        </div>
+
+        <div class="card with-corners fade-in">
+          <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">Full Code Ownership</h3>
+          <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">When we're done, you own everything. Code, database, documentation. No licensing fees. No vendor lock-in.</p>
+        </div>
+
+        <div class="card with-corners fade-in">
+          <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">No Vendor Lock-In</h3>
+          <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">You can take our work anywhere, maintain it yourself, or have any developer continue it. Complete freedom.</p>
+        </div>
+
+        <div class="card with-corners fade-in">
+          <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">Anything Is Possible</h3>
+          <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">Custom development has no ceiling. If your business needs it, we'll build it. We've never had to say "we can't do that."</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 7: CTA ===== -->
+  <section class="section fade-in" id="cta" style="text-align: center; padding-top: 10rem; padding-bottom: 10rem;">
+    <div class="container" style="max-width: 700px;">
+      <div class="label" style="margin-bottom: 2rem; color: var(--color-gold);">Next Steps / 006</div>
+      <h2 style="margin-bottom: 2rem;">Let's Build Something Brilliant</h2>
+      <p class="lead" style="margin-bottom: 1.5rem;">
+        If anything in here resonated — if you saw a solution to a problem your business is dealing with — let's talk.
+      </p>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.7;">
+        No pressure. No hard sell. Just a conversation about what's possible for YOUR business.
+      </p>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 3rem; line-height: 1.7;">
+        We'll show you exactly how this would work for you — your industry, your processes, your goals.
+      </p>
+
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+        <a href="https://cal.com/coldlava/discovery-call" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem; background: transparent; border: 1px solid var(--color-gold); color: var(--color-gold); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none; transition: all 0.3s var(--ease-smooth);" onmouseover="this.style.background='rgba(212,175,55,0.1)'" onmouseout="this.style.background='transparent'">
+          Book a Discovery Call
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="mailto:jacob@coldlava.ai" style="font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+          Or send us a message →
+        </a>
+      </div>
+
+      <div style="margin-top: 5rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div style="display: flex; justify-content: center; gap: 4rem; margin-bottom: 3rem;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-primary);">Jacob Johnson</div>
+            <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.25rem;">Director, Cold Lava</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-primary);">Oliver Tatler</div>
+            <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.25rem;">Technical Lead</div>
+          </div>
+        </div>
+        <img src="cold-lava-logo.png" alt="Cold Lava" style="width: 60px; opacity: 0.4;">
+        <div style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.15);">Cold Lava / 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ===== LOADING SCREEN =====
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        document.getElementById('loading-screen').classList.add('hidden');
+      }, 800);
+    });
+    setTimeout(function() {
+      var ls = document.getElementById('loading-screen');
+      if (ls && !ls.classList.contains('hidden')) ls.classList.add('hidden');
+    }, 2500);
+
+    // ===== SCROLL PROGRESS =====
+    window.addEventListener('scroll', function() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = (scrollTop / docHeight) * 100;
+      document.getElementById('scroll-progress').style.width = progress + '%';
+    });
+
+    // ===== INTERSECTION OBSERVER =====
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+
+    // ===== PRODUCTS ACCORDION =====
+    function toggleTier(header) {
+      var item = header.parentElement;
+      var body = item.querySelector('.tier-body');
+      var isActive = item.classList.contains('active');
+
+      document.querySelectorAll('.tier-item.active').forEach(function(activeItem) {
+        activeItem.classList.remove('active');
+        activeItem.querySelector('.tier-body').style.maxHeight = null;
+      });
+
+      if (!isActive) {
+        item.classList.add('active');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        history.replaceState(null, null, '#' + item.id);
+        setTimeout(function() {
+          header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+
+    // Deep linking
+    if (window.location.hash) {
+      var target = document.querySelector(window.location.hash);
+      if (target && target.classList.contains('tier-item')) {
+        setTimeout(function() { target.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 100);
+        setTimeout(function() {
+          var header = target.querySelector('.tier-header');
+          if (header) toggleTier(header);
+        }, 400);
+      }
+    }
+
+    // ===== HERO MOUSE TRACKING & TIME =====
+    (function() {
+      var hero = document.getElementById('hero');
+      var orb = document.getElementById('hero-orb');
+      var xEl = document.getElementById('hero-x');
+      var yEl = document.getElementById('hero-y');
+      var timeEl = document.getElementById('hero-time');
+      var dateEl = document.getElementById('hero-date');
+
+      if (hero) {
+        hero.addEventListener('mousemove', function(e) {
+          var rect = hero.getBoundingClientRect();
+          var x = (e.clientX - rect.left) / rect.width;
+          var y = (e.clientY - rect.top) / rect.height;
+          if (xEl) xEl.textContent = String(Math.floor(x * 10000)).padStart(4, '0');
+          if (yEl) yEl.textContent = String(Math.floor(y * 10000)).padStart(4, '0');
+          if (orb) orb.style.transform = 'translate(' + (e.clientX - rect.left - 300) + 'px, ' + (e.clientY - rect.top - 300) + 'px)';
+        });
+      }
+
+      function updateTime() {
+        var now = new Date();
+        var opts = { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-GB', opts);
+        var dOpts = { timeZone: 'Europe/London', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        if (dateEl) dateEl.textContent = now.toLocaleDateString('en-GB', dOpts);
+      }
+      updateTime();
+      setInterval(updateTime, 1000);
+    })();
+
+    // ===== TICKER SPOTLIGHT =====
+    (function() {
+      var tickerLogos = document.querySelectorAll('[style*="filter: grayscale"]');
+      if (tickerLogos.length === 0) return;
+      function updateSpotlight() {
+        var centerX = window.innerWidth / 2;
+        tickerLogos.forEach(function(logo) {
+          var rect = logo.getBoundingClientRect();
+          var logoCenter = rect.left + rect.width / 2;
+          var dist = Math.abs(centerX - logoCenter);
+          if (dist < 150) {
+            logo.style.filter = 'grayscale(0%)';
+            logo.style.opacity = '1';
+          } else {
+            logo.style.filter = 'grayscale(100%)';
+            logo.style.opacity = '0.6';
+          }
+        });
+      }
+      setInterval(updateSpotlight, 50);
+    })();
+
+    // ===== WORKFLOW ANIMATION =====
+    (function() {
+      var workflowBoxes = document.querySelectorAll('.workflow-box');
+      if (workflowBoxes.length === 0) return;
+      var startTime = Date.now();
+      var totalDuration = 12000;
+      var stageTimes = [
+        { start: 0, end: 3000 },
+        { start: 3000, end: 6000 },
+        { start: 6000, end: 9000 },
+        { start: 9000, end: 12000 }
+      ];
+      var activeStage = -1;
+      function updateWorkflowBoxes() {
+        var elapsed = (Date.now() - startTime) % totalDuration;
+        var newStage = -1;
+        for (var i = 0; i < stageTimes.length; i++) {
+          if (elapsed >= stageTimes[i].start && elapsed < stageTimes[i].end) { newStage = i; break; }
+        }
+        if (newStage !== activeStage) {
+          activeStage = newStage;
+          workflowBoxes.forEach(function(box, index) {
+            if (index === activeStage) {
+              box.style.opacity = '1';
+              box.style.transform = 'scale(1)';
+              box.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+            } else {
+              box.style.opacity = '0.4';
+              box.style.transform = 'scale(0.97)';
+              box.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+            }
+          });
+        }
+      }
+      setInterval(updateWorkflowBoxes, 100);
+    })();
+
+    // ===== BOS TABS =====
+    function switchBosTab(tab, panelId) {
+      tab.parentElement.querySelectorAll('.bos-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.closest('.demo-area').querySelectorAll('.bos-panel').forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(panelId).classList.add('active');
+    }
+
+    // ===== REP SIDEBAR =====
+    var sidebar = document.getElementById('rep-sidebar');
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+    }
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
+
+    document.addEventListener('keydown', function(e) {
+      if ((e.key === 's' || e.key === 'S') && document.activeElement.tagName !== 'INPUT') {
+        toggleSidebar();
+      }
+    });
+
+    // Mode buttons
+    document.querySelectorAll('.mode-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.mode-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+
+    // Apply configuration
+    document.getElementById('apply-config').addEventListener('click', function() {
+      var name = document.getElementById('prospect-name').value.trim();
+      var hud = document.getElementById('prospect-hud');
+      var hudName = document.getElementById('prospect-hud-name');
+
+      if (name) {
+        hudName.textContent = name.toUpperCase();
+        hud.classList.add('visible');
+      } else {
+        hud.classList.remove('visible');
+      }
+
+      var checkboxes = document.querySelectorAll('.tier-checkbox');
+      checkboxes.forEach(function(cb) {
+        var tierId = cb.dataset.tier;
+        var tierEl = document.getElementById(tierId);
+        if (tierEl) tierEl.style.display = cb.checked ? '' : 'none';
+      });
+
+      var config = { name: name, tiers: {} };
+      checkboxes.forEach(function(cb) { config.tiers[cb.dataset.tier] = cb.checked; });
+      localStorage.setItem('cl-deck-config', JSON.stringify(config));
+
+      sidebar.classList.remove('open');
+    });
+
+    // Load saved config
+    (function() {
+      var savedConfig = localStorage.getItem('cl-deck-config');
+      if (!savedConfig) return;
+      try {
+        var config = JSON.parse(savedConfig);
+        if (config.name) {
+          document.getElementById('prospect-name').value = config.name;
+          document.getElementById('prospect-hud-name').textContent = config.name.toUpperCase();
+          document.getElementById('prospect-hud').classList.add('visible');
+        }
+        if (config.tiers) {
+          Object.entries(config.tiers).forEach(function(entry) {
+            var tierId = entry[0], visible = entry[1];
+            var cb = document.querySelector('.tier-checkbox[data-tier="' + tierId + '"]');
+            var tierEl = document.getElementById(tierId);
+            if (cb) cb.checked = visible;
+            if (tierEl) tierEl.style.display = visible ? '' : 'none';
+          });
+        }
+      } catch(e) {}
+    })();
+
+    // Reset
+    document.getElementById('reset-config').addEventListener('click', function() {
+      document.getElementById('prospect-name').value = '';
+      document.getElementById('prospect-hud').classList.remove('visible');
+      document.querySelectorAll('.tier-checkbox').forEach(function(cb) {
+        cb.checked = true;
+        var tierEl = document.getElementById(cb.dataset.tier);
+        if (tierEl) tierEl.style.display = '';
+      });
+      localStorage.removeItem('cl-deck-config');
+    });
+  </script>
+
 </body>
 </html>
