@@ -2411,24 +2411,24 @@
     })();
 
     // ===== WORKFLOW ANIMATION =====
+    // Uses svg.getCurrentTime() to stay perfectly in sync with <animateMotion dur="12s">
+    // Each curve of the wave = 3s: Diagnose(0-3s), Design(3-6s), Build(6-9s), Support(9-12s)
     (function() {
       var workflowBoxes = document.querySelectorAll('.workflow-box');
       if (workflowBoxes.length === 0) return;
-      var startTime = Date.now();
-      var totalDuration = 12000;
-      var stageTimes = [
-        { start: 0, end: 3000 },
-        { start: 3000, end: 6000 },
-        { start: 6000, end: 9000 },
-        { start: 9000, end: 12000 }
-      ];
+      // Get the SVG so we can read its live animation time
+      var svg = document.querySelector('.workflow-container svg');
+      var totalDuration = 12; // seconds (must match animateMotion dur)
+      var stageDuration = totalDuration / workflowBoxes.length; // 3s per box
       var activeStage = -1;
-      function updateWorkflowBoxes() {
-        var elapsed = (Date.now() - startTime) % totalDuration;
-        var newStage = -1;
-        for (var i = 0; i < stageTimes.length; i++) {
-          if (elapsed >= stageTimes[i].start && elapsed < stageTimes[i].end) { newStage = i; break; }
-        }
+
+      function tick() {
+        // svg.getCurrentTime() is in seconds and starts when SVG renders —
+        // perfectly synced with <animateMotion>
+        var t = svg ? (svg.getCurrentTime() % totalDuration) : 0;
+        var newStage = Math.floor(t / stageDuration);
+        if (newStage >= workflowBoxes.length) newStage = workflowBoxes.length - 1;
+
         if (newStage !== activeStage) {
           activeStage = newStage;
           workflowBoxes.forEach(function(box, index) {
@@ -2436,15 +2436,18 @@
               box.style.opacity = '1';
               box.style.transform = 'scale(1)';
               box.style.borderColor = 'rgba(6, 182, 212, 0.4)';
+              box.style.boxShadow = '0 0 40px rgba(6, 182, 212, 0.1)';
             } else {
               box.style.opacity = '0.4';
               box.style.transform = 'scale(0.97)';
               box.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+              box.style.boxShadow = 'none';
             }
           });
         }
+        requestAnimationFrame(tick);
       }
-      setInterval(updateWorkflowBoxes, 100);
+      requestAnimationFrame(tick);
     })();
 
     // ===== BOS TABS =====
