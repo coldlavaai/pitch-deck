@@ -39,6 +39,530 @@ Stack: Vanilla HTML/CSS/JS — no frameworks. Same approach as the reference dec
 
 ---
 
+## ⚠️ DESIGN NON-NEGOTIABLES — READ THIS FIRST
+
+**This is the single most important instruction in this document.**
+
+The client deck MUST look and feel identical to:
+1. The Cold Lava website: https://coldlava.ai
+2. The sales rep deck: https://sales-rep-onboarding-final.vercel.app
+
+Oliver and JJ have a very specific aesthetic they've refined across multiple projects. **Do not improvise. Do not substitute. Do not "improve" the design.** Every pixel should feel like it came from the same design system.
+
+**Before building anything:** Open `/home/moltbot/sales-deck/index.html` and read it fully. This is your design bible. You are building a sibling of this file, not a cousin.
+
+**The rules:**
+- If you're unsure of a value — look it up in the reference HTML, don't guess
+- If a component exists in the reference — copy it, don't rebuild it
+- If an animation exists in the reference — copy the keyframe and timing exactly
+- Every section should feel like it was built by the same person on the same day
+
+---
+
+## 🎨 DESIGN SYSTEM — EXACT SPECIFICATIONS
+
+### Colors (copy exactly, never substitute)
+```css
+--color-bg: #030305;                          /* deep black — background everywhere */
+--color-text-primary: #FFFFFF;
+--color-text-secondary: #E5E7EB;
+--color-text-muted: rgba(255, 255, 255, 0.5);
+--color-accent: #00d4ff;                      /* cyan — primary accent, links, highlights */
+--color-gold: #D4AF37;                        /* gold — philosophy boxes, flagship badges, CTAs */
+--color-border: rgba(6, 182, 212, 0.2);       /* subtle cyan border on all cards */
+```
+
+### Typography (exact values)
+```css
+--font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+--font-mono: 'JetBrains Mono', monospace;
+
+/* Load from Google Fonts — these exact weights: */
+Inter: 300, 400, 500, 600, 700, 800
+JetBrains Mono: 400, 500
+
+h1: font-size clamp(3.5rem, 8vw, 5.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.02em;
+h2: font-size clamp(2.5rem, 6vw, 4rem);  font-weight: 700; line-height: 1.2; letter-spacing: -0.015em;
+h3: font-size clamp(1.5rem, 3vw, 2rem);  font-weight: 600; line-height: 1.3;
+.lead: font-size 1.25rem; font-weight: 400; color: var(--color-text-secondary); line-height: 1.6;
+.label: font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-muted);
+```
+
+### Spacing (exact values)
+```css
+--container-max: 1280px;
+--section-padding: 8rem;          /* vertical padding on sections */
+--section-padding-mobile: 4rem;
+--container-padding: 2rem;        /* horizontal container padding */
+--ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+```
+
+### Global HTML/body
+```css
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--font-primary); background: var(--color-bg); color: var(--color-text-primary); line-height: 1.6; overflow-x: hidden; font-size: 1rem; }
+```
+
+---
+
+### Background Effects (copy these exactly)
+
+**Light streams** — vertical cyan gradients that drift slowly:
+```css
+@keyframes streamFlow {
+  0%, 100% { opacity: 0.2; transform: translateY(0); }
+  50% { opacity: 0.5; transform: translateY(-10vh); }
+}
+
+.light-stream {
+  position: absolute;
+  width: 1px;
+  height: 40vh;
+  background: linear-gradient(to bottom, transparent 0%, rgba(6, 182, 212, 0.3) 50%, transparent 100%);
+  animation: streamFlow var(--stream-dur, 7s) ease-in-out infinite;
+  animation-delay: var(--stream-delay, 0s);
+  opacity: 0.4;
+  pointer-events: none;
+}
+```
+
+**Place 7 streams across the fixed background (same positions as reference deck):**
+```html
+<div class="section-atmosphere" style="position: fixed; z-index: -1;">
+  <div class="light-stream" style="left:8%;--stream-dur:7s;--stream-delay:0s;"></div>
+  <div class="light-stream" style="left:18%;--stream-dur:9s;--stream-delay:2s;"></div>
+  <div class="light-stream" style="left:30%;--stream-dur:6s;--stream-delay:4s;"></div>
+  <div class="light-stream" style="left:45%;--stream-dur:8s;--stream-delay:1s;"></div>
+  <div class="light-stream" style="left:65%;--stream-dur:7s;--stream-delay:3s;"></div>
+  <div class="light-stream" style="left:80%;--stream-dur:9s;--stream-delay:5s;"></div>
+  <div class="light-stream" style="left:92%;--stream-dur:6s;--stream-delay:2.5s;"></div>
+</div>
+```
+
+**Grid pattern** (on cards, subtle):
+```css
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.5) 1px, transparent 1px);
+  background-size: 12px 12px;
+  opacity: 0.08;
+  pointer-events: none;
+}
+```
+
+**Grain texture overlay** (in hero, subtle noise):
+```html
+<div style="position: absolute; inset: 0; background-image: url('data:image/svg+xml,<svg viewBox=\"0 0 256 256\" xmlns=\"http://www.w3.org/2000/svg\"><filter id=\"n\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.9\" numOctaves=\"4\" stitchTiles=\"stitch\"/></filter><rect width=\"100%25\" height=\"100%25\" filter=\"url(%23n)\" opacity=\"0.04\"/></svg>'); pointer-events: none; z-index: 1; opacity: 0.5;"></div>
+```
+
+---
+
+### Card Components (copy exactly, use everywhere)
+
+**Standard card with L-shaped corner decorations:**
+```html
+<div class="card with-corners with-grid">
+  <div class="grid-pattern"></div>
+  <!-- content here -->
+</div>
+```
+
+```css
+.card {
+  position: relative;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--color-border);
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+}
+
+/* Top-left corner bracket */
+.card.with-corners::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 12px; height: 12px;
+  border-left: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Bottom-right corner bracket */
+.card.with-corners::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 12px; height: 12px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+```
+
+**Gold philosophy/mission box variant:**
+```css
+/* Same card structure but with gold colours */
+background: rgba(212, 175, 55, 0.05);
+border-color: rgba(212, 175, 55, 0.2);
+```
+
+---
+
+### Section Labels (use on every section)
+```html
+<div class="label" style="margin-bottom: 1rem;">Section Name / 001</div>
+```
+Mono font, uppercase, muted — always above the h2.
+
+---
+
+### Fade-in Scroll Animations (apply to every section)
+```css
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+```
+
+**Intersection Observer JS (copy exactly):**
+```javascript
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+```
+
+---
+
+### Loading Screen (copy exactly)
+```css
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.08); }
+}
+
+#loading-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 0.6s var(--ease-smooth);
+}
+
+#loading-screen.hidden { opacity: 0; pointer-events: none; }
+#loading-screen img { width: 120px; height: auto; animation: pulse 2.5s ease-in-out infinite; }
+```
+
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    document.getElementById('loading-screen').classList.add('hidden');
+  }, 800);
+});
+setTimeout(function() {
+  var ls = document.getElementById('loading-screen');
+  if (ls && !ls.classList.contains('hidden')) ls.classList.add('hidden');
+}, 2500);
+```
+
+---
+
+### Ticker (horizontal scrolling text strip)
+```css
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+```
+Strip: `border-top/bottom: 1px solid rgba(255,255,255,0.05)`, `padding: 1rem 0`
+Text: `font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3)`
+Separator: `color: rgba(255,255,255,0.1); content: "·"`
+Animation: `30s linear infinite` on inner div
+
+---
+
+### Hero HUD Elements (copy exactly)
+
+**Top-left coordinates box:**
+```html
+<div style="position: absolute; top: 2rem; left: 2rem; z-index: 3; border: 1px solid rgba(255,255,255,0.08); padding: 0.5rem 0.75rem; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px);">
+  <div style="font-family: var(--font-mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4);">
+    <span>X: <span id="hero-x">0.00</span></span>
+    <span style="margin-left: 1rem;">Y: <span id="hero-y">0.00</span></span>
+  </div>
+</div>
+```
+
+**Top-right clock/date box:**
+```html
+<div style="position: absolute; top: 2rem; right: 2rem; z-index: 3; text-align: right; border: 1px solid rgba(255,255,255,0.08); padding: 0.5rem 0.75rem; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px);">
+  <div style="font-family: var(--font-mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4);">
+    <span>London</span>
+    <span style="margin: 0 0.5rem; color: rgba(6,182,212,0.3);">/</span>
+    <span id="hero-time">--:--:--</span>
+  </div>
+  <div style="font-family: var(--font-mono); font-size: 0.45rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); margin-top: 0.25rem;">
+    <span id="hero-date">Loading...</span>
+  </div>
+</div>
+```
+
+**Corner brackets (architectural framing — 4 corners of the hero):**
+```html
+<div style="position: absolute; top: 1.5rem; left: 1.5rem; width: 24px; height: 24px; border-left: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+<div style="position: absolute; top: 1.5rem; right: 1.5rem; width: 24px; height: 24px; border-right: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+<div style="position: absolute; bottom: 1.5rem; left: 1.5rem; width: 24px; height: 24px; border-left: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+<div style="position: absolute; bottom: 1.5rem; right: 1.5rem; width: 24px; height: 24px; border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 1;"></div>
+```
+
+**Mouse-reactive orb:**
+```html
+<div id="hero-orb" style="position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%); pointer-events: none; transition: transform 0.3s ease-out; z-index: 0; left: 50%; top: 50%; transform: translate(-50%,-50%);"></div>
+```
+
+```javascript
+hero.addEventListener('mousemove', function(e) {
+  var rect = hero.getBoundingClientRect();
+  var x = (e.clientX - rect.left) / rect.width;
+  var y = (e.clientY - rect.top) / rect.height;
+  xEl.textContent = x.toFixed(2);
+  yEl.textContent = y.toFixed(2);
+  orb.style.transform = 'translate(' + (e.clientX - rect.left - 300) + 'px, ' + (e.clientY - rect.top - 300) + 'px)';
+});
+```
+
+---
+
+### Company Section Layout (staggered cards)
+```html
+<!-- Two-column: 1.2fr left (cards), 0.8fr right (sticky mission box) -->
+<div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: start;">
+
+  <!-- Left: staggered capability cards -->
+  <div style="display: flex; flex-direction: column; gap: 2rem;">
+    <div class="card with-corners with-grid" style="transform: translateX(0);">...</div>      <!-- card 1: no offset -->
+    <div class="card with-corners with-grid" style="transform: translateX(2rem);">...</div>   <!-- card 2: 2rem right -->
+    <div class="card with-corners with-grid" style="transform: translateX(4rem);">...</div>   <!-- card 3: 4rem right -->
+  </div>
+
+  <!-- Right: sticky gold mission box -->
+  <div style="position: sticky; top: 6rem;">
+    <div class="card with-corners" style="background: rgba(212,175,55,0.05); border-color: rgba(212,175,55,0.2); padding: 2.5rem;">
+      ...
+    </div>
+  </div>
+
+</div>
+```
+
+---
+
+### Process Section Layout (two-column: philosophy left, animated cycle right)
+
+```html
+<div style="display: grid; grid-template-columns: 400px 1fr; gap: 4rem; align-items: start;">
+  <!-- Left: philosophy box + dev priorities grid -->
+  <!-- Right: workflow cycle (hidden on mobile, shown on desktop via .workflow-container) -->
+</div>
+```
+
+Copy the workflow cycle HTML exactly from `/home/moltbot/sales-deck/index.html` — the SVG wave path animation, the 4 workflow boxes (Diagnose, Design, Build, Support), the animated gold dot traversing the wave. This is a signature element.
+
+---
+
+### Products Accordion (copy the entire component)
+
+```css
+/* Section dividers */
+.tier-item { border-bottom: 1px solid rgba(6,182,212,0.1); }
+.tier-item:first-child { border-top: 1px solid rgba(6,182,212,0.1); }
+
+/* Header row */
+.tier-header {
+  display: flex; align-items: center; gap: 1.5rem; padding: 1.75rem 0;
+  cursor: pointer; transition: all 0.3s var(--ease-smooth); user-select: none;
+}
+
+/* Hover: indent + cyan highlight */
+.tier-header:hover { padding-left: 0.5rem; }
+.tier-header:hover .tier-name { color: var(--color-accent); }
+.tier-header:hover .tier-line { background: var(--color-accent); width: 3rem; }
+
+/* Active state: full cyan */
+.tier-item.active .tier-name { color: var(--color-accent); }
+.tier-item.active .tier-chevron { transform: rotate(180deg); color: var(--color-accent); }
+.tier-item.active .tier-number { color: var(--color-accent); }
+.tier-item.active .tier-line { width: 4rem; background: var(--color-accent); }
+
+/* Expanding body */
+.tier-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.5s var(--ease-smooth), opacity 0.4s var(--ease-smooth); }
+.tier-item.active .tier-body { opacity: 1; }
+
+/* Animated line element between number and name */
+.tier-line { width: 2rem; height: 1px; background: rgba(6,182,212,0.2); transition: all 0.4s var(--ease-smooth); flex-shrink: 0; }
+
+/* Gold badge (used for flagship tiers) */
+.tier-badge {
+  font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 0.35rem 0.75rem; border: 1px solid rgba(212,175,55,0.3);
+  color: var(--color-gold); background: rgba(212,175,55,0.05); white-space: nowrap;
+}
+```
+
+Tier content indentation: `padding: 0 0 3rem 3.5rem`
+
+---
+
+### Device Mockups (laptop + phone)
+
+```html
+<!-- Side-by-side: laptop left, phone right -->
+<div class="device-showcase" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+
+  <div class="device-mockup">
+    <div class="device-label" style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); margin-bottom: 0.75rem; text-align: center;">Desktop</div>
+    <div class="laptop-frame" style="position: relative; background: #111; border: 2px solid rgba(255,255,255,0.1); border-radius: 8px 8px 0 0; padding: 6px; overflow: hidden; height: 240px;">
+      <iframe src="URL_HERE" style="width: 1440px; height: 900px; transform: scale(0.24); transform-origin: top left; border: none; border-radius: 4px 4px 0 0; background: #0a0a0f; pointer-events: none;"></iframe>
+    </div>
+    <div class="laptop-base" style="height: 12px; background: linear-gradient(to bottom, #1a1a1a, #0d0d0d); border-radius: 0 0 4px 4px; margin: 0 -5%; border: 1px solid rgba(255,255,255,0.05); border-top: none;"></div>
+  </div>
+
+  <div class="device-mockup">
+    <div class="device-label" style="...">Mobile</div>
+    <div class="phone-frame" style="position: relative; background: #111; border: 3px solid rgba(255,255,255,0.12); border-radius: 24px; padding: 32px 8px 24px; max-width: 180px; margin: 0 auto; aspect-ratio: 9/19; overflow: hidden;">
+      <!-- notch -->
+      <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 40%; height: 4px; background: rgba(255,255,255,0.08); border-radius: 4px; z-index: 5;"></div>
+      <iframe src="URL_HERE" style="width: 100%; height: 100%; border: none; border-radius: 12px; background: #0a0a0f;"></iframe>
+    </div>
+  </div>
+
+</div>
+```
+
+**For interactive iframes** (where the prospect can actually scroll/interact), set `pointer-events: auto` and remove the `scale(0.24)` transform. Use a fixed height iframe instead.
+
+---
+
+### Demo Frame Wrapper (for interactive demos)
+```html
+<div class="demo-frame-wrapper" style="position: relative; background: rgba(0,0,0,0.4); border: 1px solid rgba(6,182,212,0.15); overflow: hidden;">
+  <!-- corner decorations -->
+  <div style="position: absolute; top: 0; left: 0; width: 12px; height: 12px; border-left: 1px solid rgba(6,182,212,0.3); border-top: 1px solid rgba(6,182,212,0.3); z-index: 2;"></div>
+  <div style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-right: 1px solid rgba(6,182,212,0.3); border-bottom: 1px solid rgba(6,182,212,0.3); z-index: 2;"></div>
+  <iframe src="URL" style="display: block; width: 100%; height: 600px; border: none; background: #0a0a0f;"></iframe>
+</div>
+```
+
+---
+
+### Demo Label (above every demo area)
+```html
+<div class="demo-label" style="font-family: var(--font-mono); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(6,182,212,0.5); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+  <span style="display: block; width: 1.5rem; height: 1px; background: rgba(6,182,212,0.15);"></span>
+  Live Demo
+  <span style="flex: 1; height: 1px; background: rgba(6,182,212,0.15);"></span>
+</div>
+```
+
+---
+
+### BOS Tabs
+```javascript
+function switchBosTab(tab, panelId) {
+  tab.parentElement.querySelectorAll('.bos-tab').forEach(t => t.classList.remove('active'));
+  tab.closest('.demo-area').querySelectorAll('.bos-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+```
+
+---
+
+### 6-Card Why Us Grid (same as Sales Points section)
+```html
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+  <div class="card with-corners">
+    <h3 style="font-size: 1.1rem; color: var(--color-accent); margin-bottom: 0.75rem;">Title</h3>
+    <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">Body</p>
+  </div>
+  <!-- repeat x6 -->
+</div>
+```
+
+---
+
+### Sign-off CTA Button (gold, outlined)
+```html
+<a href="URL" target="_blank" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem; background: transparent; border: 1px solid var(--color-gold); color: var(--color-gold); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none; transition: all 0.3s var(--ease-smooth);">
+  Book a Discovery Call
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
+```
+
+---
+
+### Workflow Diagram (for Tier 1 + Tier 4)
+```html
+<div class="workflow-demo" style="display: flex; align-items: center; overflow-x: auto; padding: 1.5rem 0; gap: 0;">
+  <div class="workflow-node" style="position: relative; background: rgba(0,0,0,0.5); border: 1px solid rgba(6,182,212,0.2); padding: 1rem 1.25rem; min-width: 140px; text-align: center; flex-shrink: 0;">
+    <div style="position: absolute; top: 0; left: 0; width: 8px; height: 8px; border-left: 1px solid rgba(6,182,212,0.3); border-top: 1px solid rgba(6,182,212,0.3);"></div>
+    <div style="position: absolute; bottom: 0; right: 0; width: 8px; height: 8px; border-right: 1px solid rgba(6,182,212,0.3); border-bottom: 1px solid rgba(6,182,212,0.3);"></div>
+    <div class="node-icon" style="font-size: 1.25rem; margin-bottom: 0.5rem;">ICON</div>
+    <div style="font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-primary);">Label</div>
+    <div style="font-size: 0.7rem; color: var(--color-text-muted); margin-top: 0.25rem;">Sublabel</div>
+  </div>
+  <!-- Arrow between nodes -->
+  <div style="display: flex; align-items: center; padding: 0 0.5rem; flex-shrink: 0;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(6,182,212,0.3)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </div>
+  <!-- repeat nodes + arrows -->
+</div>
+```
+
+---
+
+### Mobile Responsive (copy from reference)
+```css
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 4rem;
+    --container-padding: 1.5rem;
+  }
+  /* Two-column grids → single column */
+  /* Staggered card transforms → none */
+  /* Mission box → not sticky */
+  /* Workflow cycle → hide (show desktop only) */
+  /* Tier grid → single column */
+  /* Device showcase → single column */
+  /* 3-col card grids → 1 or 2 col */
+}
+
+@media (min-width: 1024px) {
+  .workflow-container { display: block !important; }
+}
+```
+
+---
+
 ## 🎨 DESIGN SYSTEM — COPY FROM REFERENCE DECK
 
 **DO NOT redesign or improvise.** Copy the entire `<style>` block from `/home/moltbot/sales-deck/index.html` as the foundation. Every CSS variable, animation, component, and pattern should be identical.
