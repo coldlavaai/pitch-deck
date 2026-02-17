@@ -2225,7 +2225,8 @@
 
       if (!isActive) {
         item.classList.add('active');
-        body.style.maxHeight = body.scrollHeight + 'px';
+        // Use 9999px as fallback — iframes are lazy-loaded so scrollHeight is unreliable
+        body.style.maxHeight = '9999px';
         history.replaceState(null, null, '#' + item.id);
         setTimeout(function() {
           header.scrollIntoView({ behavior: 'smooth', block: 'start' });
